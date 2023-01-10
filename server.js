@@ -1,12 +1,12 @@
 const express = require("express");
 const session = require("express-session");
-// const connectDB = require("./config/db");
+const connectDB = require("./config/db");
 const app = express();
-const Port = process.env.PORT || 3000;
+const Port = 3000;
 require("dotenv").config();
 
 // Connecting The Database
-// connectDB();
+connectDB();
 
 // middlewares
 // app.use(express.urlencoded({ extended: false }));
