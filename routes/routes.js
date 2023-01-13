@@ -191,6 +191,10 @@ router.post("/send", (req, res) => {
           var add = parseInt(documents.amount) + parseInt(sendamount);
           documents.amount = add;
           documents.save();
+          req.session.message = {
+            message: "Transaction has been completed.",
+            type: "success",
+          };
           res.redirect("/holders");
         }
       });
