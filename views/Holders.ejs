@@ -1,0 +1,65 @@
+<%- include('layout/Header') %>
+<div class="row my-4">
+  <div class="col-lg-13">
+    <% if (message) { %>
+    <div
+      class="alert alert-dismissible fade show alert-<%= message.type %>"
+      role="alert"
+    >
+      <button
+        class="btn-close"
+        type="button"
+        data-bs-dismiss="alert"
+        aria-label="Closer"
+      ></button>
+      <strong><%=message.message %> </strong>
+    </div>
+    <% } %>
+    <div class="table-responsive">
+      <% if (holders!='') { %>
+      <table class="table table-striped my-5">
+        <thead>
+          <tr class="table-dark">
+            <th>ID</th>
+            <th>IMAGE</th>
+            <th>NAME</th>
+            <th>EMAIL</th>
+            <th>PHONE</th>
+            <th>AMOUNT</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% holders.forEach((row,index) => { %>
+          <tr class="align-middle">
+            <td><%=index %></td>
+            <td>
+              <img src="<%=row.image%>" width="50" class="img-thumbnail" />
+            </td>
+            <td><%= row.name%></td>
+            <td><%= row.email%></td>
+            <td><%= row.phone%></td>
+            <td><%= row.amount%></td>
+
+            <td>
+              <a href="/edit/<%=row._id%> " class="text-success"
+                ><i class="fas fa-edit fa-lg mx-1"></i
+              ></a>
+
+              <a href="/delete/<%=row._id%>" class="text-danger"
+                ><i class="fas fa-trash fa-lg mx-0"></i
+              ></a>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <% } else { %>
+      <h1 class="text-center text-secondary mt-5">
+        No Account Has Been Created
+      </h1>
+      <% } %>
+    </div>
+  </div>
+  <%- include('layout/Footer') %>
+</div>

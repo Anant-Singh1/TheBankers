@@ -5,6 +5,8 @@ const Holder = require("../models/holders");
 const multer = require("multer");
 const fs = require("fs");
 const holders = require("../models/holders");
+const { findById } = require("../models/holders");
+const { parse } = require("path");
 
 // image upload
 var storage = multer.diskStorage({
@@ -29,7 +31,7 @@ router.post("/add", upload, (req, res) => {
     amount: req.body.amount,
     image: req.file.filename,
   });
-  console.log(holder.email);
+  // console.log(holder.email);
   holder.save((err) => {
     if (err) {
       res.json({ message: err.message, type: "danger" });
@@ -152,7 +154,48 @@ router.get("/transactions", (req, res) => {
 });
 
 router.post("/send", (req, res) => {
-  // console.log(req.body);
+  var senderid = req.body.sender;
+  var receiverid = req.body.receiver;
+  var sendamount = req.body.amount;
+  if (senderid === receiverid) {
+    req.session.message = {
+      message: "The transaction cannot be done between the same account",
+      type: "danger",
+    };
+    res.redirect("/transactions");
+  }
+  Holder.findById(senderid, (err, docs) => {
+    if (err) {
+      req.session.message = {
+        message: "Sorry an error occured",
+        type: "danger",
+      };
+      res.redirect("/transactions");
+    } else if (parseInt(docs.amount) <= parseInt(sendamount)) {
+      req.session.message = {
+        message: "The sender does not have this much of amount",
+        type: "danger",
+      };
+      res.redirect("/transactions");
+    } else {
+      docs.amount -= sendamount;
+      docs.save();
+      Holder.findById(receiverid, (err, documents) => {
+        if (err) {
+          req.session.message = {
+            message: "Sorry an error occured",
+            type: "danger",
+          };
+          res.redirect("/transactions");
+        } else {
+          var add = parseInt(documents.amount) + parseInt(sendamount);
+          documents.amount = add;
+          documents.save();
+          res.redirect("/holders");
+        }
+      });
+    }
+  });
 });
 
 router.get("/holders", (req, res) => {

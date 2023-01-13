@@ -27,4 +27,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Holders", userSchema);
+module.exports = mongoose.model("Holder", userSchema);
