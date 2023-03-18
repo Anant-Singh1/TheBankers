@@ -1,4 +1,5 @@
 const express = require("express");
+const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
 var bodyParser = require("body-parser");
 
@@ -31,7 +32,7 @@ app.use(express.json());
 // Initialising the express-session
 app.use(
   session({
-    secret: "my secret key",
+    secret: uuidv4(),
     saveUninitialized: true,
     resave: false,
   })

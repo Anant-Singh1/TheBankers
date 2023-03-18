@@ -212,7 +212,7 @@ router.get("/transactions", (req, res) => {
     title: "Transaction",
   });
 });
-router.get("/", (req, res) => {
+router.get("/home", (req, res) => {
   res.render("index", {
     title: "Home",
   });
@@ -222,5 +222,31 @@ router.get("/add", (req, res) => {
   res.render("add_account", {
     title: "Add Account",
   });
+});
+
+// login page
+router.get("/", (req, res) => {
+  res.render("login", { title: "Login Please" });
+});
+
+// using login page
+const creds = {
+  username: "anant_singh",
+  password: "123",
+};
+router.post("/", (req, res) => {
+  var username = req.body.username;
+  var password = req.body.password;
+  if (username == creds.username && password == creds.password) {
+    req.session.user = req.body.username;
+    res.render("/home");
+  } else {
+    req.session.message = {
+      type: "danger",
+      message: "Invalid email and password",
+    };
+    // console.log(username);
+    res.redirect("/");
+  }
 });
 module.exports = router;
