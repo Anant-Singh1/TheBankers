@@ -14,26 +14,10 @@ connectDB();
 //Adding the middlewares to the server
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-// parse application/json
-// app.use(bodyParser.json());
-// app.use(
-//   bodyParser.urlencoded({
-//     extended: true,
-//   })
-// );
-
-// app.use(bodyParser.json()); // to support JSON-encoded bodies
-// app.use(
-//   bodyParser.urlencoded({
-//     // to support URL-encoded bodies
-//     extended: true,
-//   })
-// );
-// Initialising the express-session
 app.use(
   session({
     secret: uuidv4(),
-    saveUninitialized: true,
+    saveUninitialized: false,
     resave: false,
   })
 );
